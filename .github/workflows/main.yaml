@@ -45,8 +45,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME_PROD }}
           key: ${{ secrets.DEPLOYMENT_KEY_PROD }}
           port: ${{ secrets.SSH_PORT_PROD }}
-          source: "./nodes/persistence-node/bin,./nodes/persistence-node/node_modules,./nodes/ens-contenthash-indexer-node/bin,./nodes/ens-contenthash-indexer-node/node_modules"
-          target: "/home/ubuntu/staging/polywrap/nodes"
+          source: "./bin,./node_modules"
+          target: "/home/ubuntu/staging/polywrap/client-server"
       
       - name: Deploy nodes to production server
         uses: appleboy/ssh-action@master
