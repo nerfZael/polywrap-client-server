@@ -12,9 +12,9 @@ export const config = {
   },
   ipfs: {
     defaultProviders: [
-      "http://localhost:8080",
       "https://ipfs.wrappers.io",
       "https://ipfs.io",
+      "http://localhost:8080",
     ]
   }
 };
