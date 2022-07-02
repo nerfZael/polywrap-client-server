@@ -1,0 +1,14 @@
+format: 0.0.1-prealpha.1
+stages:
+  ipfs_deploy:
+    package: ipfs
+    uri: fs/./build
+    config:
+      gatewayUri: 'https://ipfs.wrappers.dev'
+  ens_deploy:
+    package: ens
+    depends_on: ipfs_deploy
+    config:
+      domainName: blabla.eth
+      ensRegistryAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'
+      provider: 'http://localhost:24012/rpc'
