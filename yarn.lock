@@ -959,8 +959,10 @@
   resolved "https://registry.yarnpkg.com/@msgpack/msgpack/-/msgpack-2.7.2.tgz#f34b8aa0c49f0dd55eb7eba577081299cbf3f90b"
   integrity sha512-rYEi46+gIzufyYUAoHDnRzkWGxajpD9vVXFQ3g1vbjrBm6P7MBmm+s/fqPa46sxa+8FOUdEuRQKaugo5a4JWpw==
 
-"@nerfzael/polywrap-remote-client@file:../polywrap-remote-client":
+"@nerfzael/polywrap-remote-client@0.1.0":
   version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@nerfzael/polywrap-remote-client/-/polywrap-remote-client-0.1.0.tgz#6100877c1523e8aab89797999b8b85303e4754da"
+  integrity sha512-oUqXqR0U3SFDxk89m9PXV54Qmeq7zc8JN5vRaMRGTaWUG3LEOLQ3ES7x1tNIvk/axeWPV/6NXXhCsLes0a/g7g==
   dependencies:
     "@polywrap/client-js" "0.0.1-prealpha.91"
     "@polywrap/core-js" "0.0.1-prealpha.91"

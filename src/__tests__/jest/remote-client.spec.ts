@@ -10,12 +10,12 @@ const PORT = 8085;
 describe("Remote client", () => {
   it("remote execution", async () => {
     const client = new PolywrapClient();
-    const server = await startServer(client, PORT);
+    const server = await startServer(client, PORT, 5000);
 
     const remoteClient = new PolywrapRemoteClient(`http://localhost:${PORT}/client`);
 
     const result2 = await remoteClient.invoke({
-      uri: `file//home/nerfzael/dev/nerfZael/polywrap-remote/polywrap-remote-client-server/src/__tests__/wrappers/simple`,
+      uri: `${__dirname}/../wrappers/simple`,
       method: "simpleMethod",
       args: {
         arg: "remote execution"
@@ -31,12 +31,12 @@ describe("Remote client", () => {
 
   it("remote resolution", async () => {
     const client = new PolywrapClient();
-    const server = await startServer(client, PORT);
+    const server = await startServer(client, PORT, 5000);
 
     const remoteClient = new PolywrapRemoteResolutionClient(`http://localhost:${PORT}/client`);
 
     const result = await remoteClient.invoke({
-      uri: `file//home/nerfzael/dev/nerfZael/polywrap-remote/polywrap-remote-client-server/src/__tests__/wrappers/simple`,
+      uri: `${__dirname}/../wrappers/simple`,
       method: "simpleMethod",
       args: {
         arg: "remote resolution"
