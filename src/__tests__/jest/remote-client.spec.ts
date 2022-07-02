@@ -1,6 +1,5 @@
 import { PolywrapClient } from "@polywrap/client-js";
 import { startServer } from "../../startServer";
-import { PolywrapRemoteClient } from "../../PolywrapRemoteClient";
 import { PolywrapRemoteExecutionClient, PolywrapRemoteResolutionClient } from "@nerfzael/polywrap-remote-client";
 
 jest.setTimeout(30000);
@@ -12,7 +11,7 @@ describe("Remote client", () => {
     const client = new PolywrapClient();
     const server = await startServer(client, PORT, 5000);
 
-    const remoteClient = new PolywrapRemoteClient(`http://localhost:${PORT}/client`);
+    const remoteClient = new PolywrapRemoteExecutionClient(`http://localhost:${PORT}/client`);
 
     const result2 = await remoteClient.invoke({
       uri: `${__dirname}/../wrappers/simple`,

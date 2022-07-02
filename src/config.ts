@@ -1,4 +1,11 @@
 export const config = {
+  polywrap: {
+    client: {
+      cache: {
+        "ens": 14000
+      }
+    }
+  },
   server: {
     port: 8085,
     requestTimeout: 10000,

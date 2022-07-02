@@ -4,12 +4,16 @@ import {  PolywrapClient } from "@polywrap/client-js";
 import { startServer } from "./startServer";
 import { getDefaultClientConfig } from "./getDefaultClientConfig";
 import { config } from "./config";
+import { ExpirableWrapperCache } from "./ExpirableWrapperCache";
+import { CustomPolywrapClient } from "./CustomPolywrapClient";
 
-export * from './PolywrapRemoteClient';
 export * from './startServer';
 
-const client = new PolywrapClient(getDefaultClientConfig(), {
-  noDefaults: true
+const client = new CustomPolywrapClient(getDefaultClientConfig(), {
+  noDefaults: true,
+  cache: new ExpirableWrapperCache(
+    config.polywrap.client.cache
+  )
 });
 
 (async () => {
