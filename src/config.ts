@@ -1,7 +1,7 @@
 export const config = {
   server: {
     port: 8085,
-    requestTimeout: 5000,
+    requestTimeout: 10000,
   },
   ethereum: {
     providers: {
