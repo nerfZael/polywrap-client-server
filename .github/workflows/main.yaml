@@ -56,4 +56,4 @@ jobs:
             key: ${{ secrets.DEPLOYMENT_KEY_PROD }}
             port: ${{ secrets.SSH_PORT_PROD }}
             script: |
-              curl -o- https://raw.githubusercontent.com/nerfZael/polywrap-client-server/main/deployment/prod/update.sh | bash
+              curl -o- https://raw.githubusercontent.com/nerfZael/polywrap-remote-client-server/main/deployment/prod/update.sh | bash
