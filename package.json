@@ -25,7 +25,8 @@
     "start": "ts-node src/main.ts",
     "execute": "node bin/main.js",
     "test": "yarn test:jest",
-    "test:jest": "jest test --passWithNoTests"
+    "test:jest": "jest test --passWithNoTests",
+    "install:ci": "yarn install"
   },
   "dependencies": {
     "@polywrap/client-js": "0.0.1-prealpha.91",
