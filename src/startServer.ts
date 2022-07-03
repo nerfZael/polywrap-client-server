@@ -248,22 +248,27 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
       res.send(`<pre>${
         sanitizedResult.error
       }</pre>`);
+      return;
     } else if(sanitizedResult.data) {
       if(typeof sanitizedResult.data === 'string' || sanitizedResult.data instanceof String) {
         res.send(`<pre>${
           sanitizedResult.data
         }</pre>`);
+        return;
       } else if(typeof sanitizedResult.data === 'number' || sanitizedResult.data instanceof Number) {
         res.send(`<pre>${
           sanitizedResult.data
         }</pre>`);
+        return;
       } else {
         res.send(`<pre>${
           JSON.stringify(sanitizedResult.data, null, 2)
         }</pre>`);
+        return;
       }
     } else {
       res.send(`Executed method ${method}`);
+      return;
     }
   }));
 

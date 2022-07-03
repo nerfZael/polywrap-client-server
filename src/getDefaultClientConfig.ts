@@ -6,27 +6,27 @@ import { ensResolverPlugin } from "@polywrap/ens-resolver-plugin-js";
 import { ipfsResolverPlugin } from "@polywrap/ipfs-resolver-plugin-js";
 import { sha3Plugin } from "@polywrap/sha3-plugin-js";
 import { uts46Plugin } from "@polywrap/uts46-plugin-js";
-import { config } from "./config";
-
-const ethereumPluginConfig: {
-  networks: Record<string, {
-    provider: string
-  }>
-} = {
-  networks: {
-    mainnet: {
-      provider: config.ethereum.providers.mainnet
-    },
-    ropsten: {
-      provider: config.ethereum.providers.ropsten
-    },
-    rinkeby: {
-      provider: config.ethereum.providers.rinkeby
-    }
-  }
-};
+import { config } from "./main";
 
 export const getDefaultClientConfig = (): ClientConfig<string> => {
+  const ethereumPluginConfig: {
+    networks: Record<string, {
+      provider: string
+    }>
+  } = {
+    networks: {
+      mainnet: {
+        provider: config.ethereum.providers.mainnet
+      },
+      ropsten: {
+        provider: config.ethereum.providers.ropsten
+      },
+      rinkeby: {
+        provider: config.ethereum.providers.rinkeby
+      }
+    }
+  };
+  
   return {
     envs: [],
     redirects: [],

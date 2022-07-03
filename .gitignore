@@ -3,6 +3,8 @@ bin
 build
 dist
 
+config.json
+
 #Polywrap
 w3
 .w3
