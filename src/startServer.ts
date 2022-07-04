@@ -74,8 +74,9 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
       return;
     }
     if (!(wrapper as any)["_getWasmModule"]) {
-      throw new Error("URI is not a wasm wrapper");
-    } 
+      res.status(500).send("URI is not a wasm wrapper");
+      return;
+    }
 
     const resolver = (wrapper as any)["_uriResolver"];
     const manifest: string = await wrapper?.getFile({
@@ -171,6 +172,21 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     }
   }));
 
+
+  app.get('/ens/:domain/', handleError(async (req, res) => {
+    const { domain, method } = req.params as any;
+
+    console.log("Body", {
+      uri: `ens/${domain}`
+    });
+
+    const schema = await client.getSchema({
+      uri: `ens/${domain}`
+    });
+
+    res.write(`<pre>${schema}</pre>`);
+  }));
+
   app.get('/ens/:domain/:method', handleError(async (req, res) => {
     const { domain, method } = req.params as any;
 
@@ -195,7 +211,6 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
 
     console.log(sanitizedResult);
 
-    
     if(sanitizedResult.error) {
       res.send(`<pre>${
         sanitizedResult.error
@@ -217,6 +232,20 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     } else {
       res.send(`Executed method ${method}`);
     }
+  }));
+
+  app.get('/ipfs/:cid', handleError(async (req, res) => {
+    const { cid, method } = req.params as any;
+
+    console.log("Body", {
+      uri: `ipfs/${cid}`,
+    });
+
+    const schema = await client.getSchema({
+      uri: `ipfs/${cid}`
+    });
+
+    res.write(`<pre>${schema}</pre>`);
   }));
 
   app.get('/ipfs/:cid/:method', handleError(async (req, res) => {
