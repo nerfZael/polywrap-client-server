@@ -125,6 +125,20 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     res.json(sanitizedResult);
   }));
 
+  app.get('/ens/:network/:domain', handleError(async (req, res) => {
+    const { network, domain, method } = req.params as any;
+
+    console.log("Body", {
+      uri: `ens/${network}/${domain}`,
+      method,
+      args: req.query
+    });
+
+    const schema = await client.getSchema(`ens/${network}/${domain}`);
+
+    res.send(`<pre>${schema}</pre>`);
+  }));
+
   app.get('/ens/:network/:domain/:method', handleError(async (req, res) => {
     const { network, domain, method } = req.params as any;
 
@@ -172,68 +186,6 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     }
   }));
 
-
-  app.get('/ens/:domain/', handleError(async (req, res) => {
-    const { domain, method } = req.params as any;
-
-    console.log("Body", {
-      uri: `ens/${domain}`
-    });
-
-    const schema = await client.getSchema({
-      uri: `ens/${domain}`
-    });
-
-    res.write(`<pre>${schema}</pre>`);
-  }));
-
-  app.get('/ens/:domain/:method', handleError(async (req, res) => {
-    const { domain, method } = req.params as any;
-
-    console.log("Body", {
-      uri: `ens/${domain}`,
-      method,
-      args: req.query
-    });
-
-    const result = await client.invoke({
-      uri: `ens/${domain}`,
-      method,
-      args: req.query
-    });
-
-    const sanitizedResult = {
-      data: result.data,
-      error: result.error
-        ? result.error.message
-        : undefined
-    };
-
-    console.log(sanitizedResult);
-
-    if(sanitizedResult.error) {
-      res.send(`<pre>${
-        sanitizedResult.error
-      }</pre>`);
-    } else if(sanitizedResult.data) {
-      if(typeof sanitizedResult.data === 'string' || sanitizedResult.data instanceof String) {
-        res.send(`<pre>${
-          sanitizedResult.data
-        }</pre>`);
-      } else if(typeof sanitizedResult.data === 'number' || sanitizedResult.data instanceof Number) {
-        res.send(`<pre>${
-          sanitizedResult.data
-        }</pre>`);
-      } else {
-        res.send(`<pre>${
-          JSON.stringify(sanitizedResult.data, null, 2)
-        }</pre>`);
-      }
-    } else {
-      res.send(`Executed method ${method}`);
-    }
-  }));
-
   app.get('/ipfs/:cid', handleError(async (req, res) => {
     const { cid, method } = req.params as any;
 
@@ -241,11 +193,9 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
       uri: `ipfs/${cid}`,
     });
 
-    const schema = await client.getSchema({
-      uri: `ipfs/${cid}`
-    });
+    const schema = await client.getSchema(`ipfs/${cid}`);
 
-    res.write(`<pre>${schema}</pre>`);
+    res.send(`<pre>${schema}</pre>`);
   }));
 
   app.get('/ipfs/:cid/:method', handleError(async (req, res) => {
