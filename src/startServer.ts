@@ -125,7 +125,7 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     res.json(sanitizedResult);
   }));
 
-  app.get('/ens/:network/:domain', handleError(async (req, res) => {
+  app.get('schema/ens/:network/:domain', handleError(async (req, res) => {
     const { network, domain, method } = req.params as any;
 
     console.log("Body", {
@@ -186,7 +186,54 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     }
   }));
 
-  app.get('/ipfs/:cid', handleError(async (req, res) => {
+  app.get('/ens/:domain/:method', handleError(async (req, res) => {
+    const { domain, method } = req.params as any;
+
+    console.log("Body", {
+      uri: `ens/${domain}`,
+      method,
+      args: req.query
+    });
+
+    const result = await client.invoke({
+      uri: `ens/${domain}`,
+      method,
+      args: req.query
+    });
+
+    const sanitizedResult = {
+      data: result.data,
+      error: result.error
+        ? result.error.message
+        : undefined
+    };
+
+    console.log(sanitizedResult);
+
+    if(sanitizedResult.error) {
+      res.send(`<pre>${
+        sanitizedResult.error
+      }</pre>`);
+    } else if(sanitizedResult.data) {
+      if(typeof sanitizedResult.data === 'string' || sanitizedResult.data instanceof String) {
+        res.send(`<pre>${
+          sanitizedResult.data
+        }</pre>`);
+      } else if(typeof sanitizedResult.data === 'number' || sanitizedResult.data instanceof Number) {
+        res.send(`<pre>${
+          sanitizedResult.data
+        }</pre>`);
+      } else {
+        res.send(`<pre>${
+          JSON.stringify(sanitizedResult.data, null, 2)
+        }</pre>`);
+      }
+    } else {
+      res.send(`Executed method ${method}`);
+    }
+  }));
+
+  app.get('schema/ipfs/:cid', handleError(async (req, res) => {
     const { cid, method } = req.params as any;
 
     console.log("Body", {
