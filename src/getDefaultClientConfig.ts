@@ -1,4 +1,5 @@
-import { ClientConfig, Uri, coreInterfaceUris, RedirectsResolver, CacheResolver, PluginResolver, PluginPackage, Env, ExtendableUriResolver, PolywrapManifest, WasmWrapper } from "@polywrap/client-js";
+import { ClientConfig, Uri, coreInterfaceUris, RedirectsResolver, CacheResolver, PluginResolver, PluginPackage, Env, ExtendableUriResolver, WasmWrapper } from "@polywrap/client-js";
+import { WrapManifest } from "@polywrap/wrap-manifest-types-js";
 import { ipfsPlugin } from "@polywrap/ipfs-plugin-js";
 import { ethereumPlugin } from "@polywrap/ethereum-plugin-js";
 import { PluginWrapper } from "@nerfzael/polywrap-remote-client";
@@ -109,7 +110,7 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
       new ExtendableUriResolver(
         (
           uri: Uri,
-          manifest: PolywrapManifest,
+          manifest: WrapManifest,
           uriResolver: string,
           environment: Env<Uri> | undefined
         ) => {

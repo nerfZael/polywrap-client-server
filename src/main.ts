@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
-import {  PolywrapClient } from "@polywrap/client-js";
 import { startServer } from "./startServer";
 import { getDefaultClientConfig } from "./getDefaultClientConfig";
-import { ExpirableWrapperCache } from "./ExpirableWrapperCache";
-import { CustomPolywrapClient } from "./CustomPolywrapClient";
 import dotenv from "dotenv";
 import fs from "fs";
+import { ExpirableWrapperCache, PolywrapClientWithCustomCache } from "@nerfzael/polywrap-remote-client";
 
 dotenv.config({ path: ".env" });
 
@@ -34,7 +32,7 @@ export const config: {
   }
 } = JSON.parse(fs.readFileSync(process.env.CONFIG_FILE_PATH!, "utf8"));
 
-const client = new CustomPolywrapClient(getDefaultClientConfig(), {
+const client = new PolywrapClientWithCustomCache(getDefaultClientConfig(), {
   noDefaults: true,
   cache: new ExpirableWrapperCache(
     config.polywrap.client.cache.expiration
