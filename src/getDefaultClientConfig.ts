@@ -8,6 +8,7 @@ import { ipfsResolverPlugin } from "@polywrap/ipfs-resolver-plugin-js";
 import { sha3Plugin } from "@polywrap/sha3-plugin-js";
 import { uts46Plugin } from "@polywrap/uts46-plugin-js";
 import { config } from "./main";
+import { httpPlugin } from "@nerfzael/http-plugin-wrapper";
 
 export const getDefaultClientConfig = (): ClientConfig<string> => {
   const ethereumPluginConfig: {
@@ -29,7 +30,23 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
   };
   
   return {
-    envs: [],
+    envs: [
+      {
+        uri: "wrap://ens/http.polywrap.eth",
+        env: {
+          urlPrefixWhitelist: [
+          ],
+          urlPrefixBlocklist: [
+            "localhost",
+            "http://localhost",
+            "https://localhost",
+            "127.0.0.1",
+            "http://127.0.0.1",
+            "https://127.0.0.1",
+          ]
+        }
+      }
+    ],
     redirects: [],
     plugins: [
       // IPFS is required for downloading Polywrap packages
@@ -49,10 +66,10 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
         uri: "wrap://ens/ethereum.polywrap.eth",
         plugin: ethereumPlugin(ethereumPluginConfig),
       },
-      // {
-      //   uri: new Uri("wrap://ens/http.polywrap.eth"),
-      //   plugin: httpPlugin({}),
-      // },
+      {
+        uri: "wrap://ens/http.polywrap.eth",
+        plugin: httpPlugin({}),
+      },
       {
         uri: "wrap://ens/uts46.polywrap.eth",
         plugin: uts46Plugin({}),
