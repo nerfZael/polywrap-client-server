@@ -1,6 +1,6 @@
 {
   "name": "@nerfzael/polywrap-client-server",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "bin/main.js",
   "types": "bin/main.d.ts",
   "author": "nerfZael",
@@ -29,7 +29,7 @@
     "install:ci": "yarn install"
   },
   "dependencies": {
-    "@nerfzael/http-plugin-wrapper": "0.1.0",
+    "@nerfzael/http-plugin-wrapper": "0.2.0",
     "@nerfzael/polywrap-remote-client": "0.3.0",
     "@polywrap/client-js": "0.1.0",
     "@polywrap/ens-resolver-plugin-js": "0.1.0",

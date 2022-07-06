@@ -959,10 +959,10 @@
   resolved "https://registry.yarnpkg.com/@msgpack/msgpack/-/msgpack-2.7.2.tgz#f34b8aa0c49f0dd55eb7eba577081299cbf3f90b"
   integrity sha512-rYEi46+gIzufyYUAoHDnRzkWGxajpD9vVXFQ3g1vbjrBm6P7MBmm+s/fqPa46sxa+8FOUdEuRQKaugo5a4JWpw==
 
-"@nerfzael/http-plugin-wrapper@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@nerfzael/http-plugin-wrapper/-/http-plugin-wrapper-0.1.0.tgz#5d499aea677db027b9f1363cdef32ba8a03f22df"
-  integrity sha512-foJADZhVVChrqlGNPAFvir1seVcSeDNZ4BaXuYGjQaO5sW4QTb46s+k4eMhk4HumQHtP/4Jaj0rpiGxmU//4TA==
+"@nerfzael/http-plugin-wrapper@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@nerfzael/http-plugin-wrapper/-/http-plugin-wrapper-0.2.0.tgz#b804a060d9692f9e699e9f7fd679fb05941bfa72"
+  integrity sha512-B6CKpTMVuRaX1eV9ASCvxLoAYjJ9Spqigamu8GpeLtgzNKShot/LCHSC63KxNerfetKM0H0eAArJmeOyuPiJsw==
   dependencies:
     "@polywrap/core-js" "0.1.0"
     axios "0.27.2"
