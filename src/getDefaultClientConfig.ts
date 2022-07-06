@@ -37,6 +37,7 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
           urlPrefixWhitelist: [
           ],
           urlPrefixBlocklist: [
+            "file",
             "localhost",
             "http://localhost",
             "https://localhost",

@@ -5,6 +5,7 @@ import path from "path";
 import http from "http";
 import { handleError } from "./handleError";
 import timeout from "connect-timeout";
+import { escapeHTML } from "./utils/escapeHTML";
 
 export const startServer = (client: PolywrapClient, port: number, requestTimeout: number): Promise<http.Server> => {
   const app = express();
@@ -20,9 +21,12 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
 
     //Trim and redirect multiple slashes in URL
     if (req.url.match(/[/]{2,}/g)) {
-      req.url = req.url.replace(/[/]+/g, '/');
-      res.redirect(req.url);
-      return;
+      const parts = req.url.split("?");
+      const url = parts[0].replace(/[/]+/g, "/");
+      if(parts.length > 1 && url !== parts[0]) {
+        res.redirect(url + "?" + parts.slice(1, parts.length).join("?"));
+        return;
+      }
     }
 
     if (req.method === 'OPTIONS') {
@@ -136,7 +140,7 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
 
     const schema = await client.getSchema(`ens/${network}/${domain}`);
 
-    res.send(`<pre>${schema}</pre>`);
+    res.send(`<pre>${escapeHTML(schema)}</pre>`);
   }));
 
   app.get('/ens/:network/:domain/:method', handleError(async (req, res) => {
@@ -165,20 +169,20 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
 
     if(sanitizedResult.error) {
       res.send(`<pre>${
-        sanitizedResult.error
+        escapeHTML(sanitizedResult.error)
       }</pre>`);
     } else if(sanitizedResult.data) {
-      if(typeof sanitizedResult.data === 'string' || sanitizedResult.data instanceof String) {
+      if(typeof sanitizedResult.data === 'string') {
         res.send(`<pre>${
-          sanitizedResult.data
+          escapeHTML(sanitizedResult.data)
         }</pre>`);
-      } else if(typeof sanitizedResult.data === 'number' || sanitizedResult.data instanceof Number) {
+      } else if(typeof sanitizedResult.data === 'number') {
         res.send(`<pre>${
-          sanitizedResult.data
+          escapeHTML(sanitizedResult.data.toString())
         }</pre>`);
       } else {
         res.send(`<pre>${
-          JSON.stringify(sanitizedResult.data, null, 2)
+          escapeHTML(JSON.stringify(sanitizedResult.data, null, 2))
         }</pre>`);
       }
     } else {
@@ -212,20 +216,20 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
 
     if(sanitizedResult.error) {
       res.send(`<pre>${
-        sanitizedResult.error
+        escapeHTML(sanitizedResult.error)
       }</pre>`);
     } else if(sanitizedResult.data) {
-      if(typeof sanitizedResult.data === 'string' || sanitizedResult.data instanceof String) {
+      if(typeof sanitizedResult.data === 'string') {
         res.send(`<pre>${
-          sanitizedResult.data
+          escapeHTML(sanitizedResult.data)
         }</pre>`);
-      } else if(typeof sanitizedResult.data === 'number' || sanitizedResult.data instanceof Number) {
+      } else if(typeof sanitizedResult.data === 'number') {
         res.send(`<pre>${
-          sanitizedResult.data
+          escapeHTML(sanitizedResult.data.toString())
         }</pre>`);
       } else {
         res.send(`<pre>${
-          JSON.stringify(sanitizedResult.data, null, 2)
+          escapeHTML(JSON.stringify(sanitizedResult.data, null, 2))
         }</pre>`);
       }
     } else {
@@ -242,7 +246,7 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
 
     const schema = await client.getSchema(`ipfs/${cid}`);
 
-    res.send(`<pre>${schema}</pre>`);
+    res.send(`<pre>${escapeHTML(schema)}</pre>`);
   }));
 
   app.get('/ipfs/:cid/:method', handleError(async (req, res) => {
@@ -272,23 +276,23 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     
     if(sanitizedResult.error) {
       res.send(`<pre>${
-        sanitizedResult.error
+        escapeHTML(sanitizedResult.error)
       }</pre>`);
       return;
     } else if(sanitizedResult.data) {
-      if(typeof sanitizedResult.data === 'string' || sanitizedResult.data instanceof String) {
+      if(typeof sanitizedResult.data === 'string') {
         res.send(`<pre>${
-          sanitizedResult.data
+          escapeHTML(sanitizedResult.data)
         }</pre>`);
         return;
-      } else if(typeof sanitizedResult.data === 'number' || sanitizedResult.data instanceof Number) {
+      } else if(typeof sanitizedResult.data === 'number') {
         res.send(`<pre>${
-          sanitizedResult.data
+          escapeHTML(sanitizedResult.data.toString())
         }</pre>`);
         return;
       } else {
         res.send(`<pre>${
-          JSON.stringify(sanitizedResult.data, null, 2)
+          escapeHTML(JSON.stringify(sanitizedResult.data, null, 2))
         }</pre>`);
         return;
       }
