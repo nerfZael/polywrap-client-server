@@ -6,6 +6,7 @@ import http from "http";
 import { handleError } from "./handleError";
 import timeout from "connect-timeout";
 import { escapeHTML } from "./utils/escapeHTML";
+import { homepageMessage } from "./homepageMessage";
 
 export const startServer = (client: PolywrapClient, port: number, requestTimeout: number): Promise<http.Server> => {
   const app = express();
@@ -46,6 +47,10 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
 
   app.use(cors({
     origin: "*",
+  }));
+
+  app.get('/', handleError(async (req, res) => {
+    res.send(`<pre>${homepageMessage}</pre>`);
   }));
 
   app.post('/client/resolveUri', handleError(async (req, res) => {
