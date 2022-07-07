@@ -129,7 +129,7 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     res.json(sanitizedResult);
   }));
 
-  app.get('schema/ens/:network/:domain', handleError(async (req, res) => {
+  app.get('/schema/ens/:network/:domain', handleError(async (req, res) => {
     const { network, domain, method } = req.params as any;
 
     console.log("Body", {
@@ -190,6 +190,20 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     }
   }));
 
+  app.get('/schema/ens/:domain', handleError(async (req, res) => {
+    const { domain, method } = req.params as any;
+
+    console.log("Body", {
+      uri: `ens/${domain}`,
+      method,
+      args: req.query
+    });
+
+    const schema = await client.getSchema(`ens/${domain}`);
+
+    res.send(`<pre>${escapeHTML(schema)}</pre>`);
+  }));
+
   app.get('/ens/:domain/:method', handleError(async (req, res) => {
     const { domain, method } = req.params as any;
 
@@ -237,7 +251,7 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     }
   }));
 
-  app.get('schema/ipfs/:cid', handleError(async (req, res) => {
+  app.get('/schema/ipfs/:cid', handleError(async (req, res) => {
     const { cid, method } = req.params as any;
 
     console.log("Body", {
