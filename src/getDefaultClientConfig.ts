@@ -3,12 +3,15 @@ import { WrapManifest } from "@polywrap/wrap-manifest-types-js";
 import { ipfsPlugin } from "@polywrap/ipfs-plugin-js";
 import { ethereumPlugin } from "@polywrap/ethereum-plugin-js";
 import { PluginWrapper } from "@nerfzael/polywrap-remote-client";
-import { ensResolverPlugin } from "@polywrap/ens-resolver-plugin-js";
 import { ipfsResolverPlugin } from "@polywrap/ipfs-resolver-plugin-js";
 import { sha3Plugin } from "@polywrap/sha3-plugin-js";
 import { uts46Plugin } from "@polywrap/uts46-plugin-js";
 import { config } from "./main";
 import { httpPlugin } from "@nerfzael/http-plugin-wrapper";
+import { ocrResolverPlugin } from "@nerfzael/ocr-resolver-plugin-wrapper";
+import { ensContenthashResolverPlugin } from "@nerfzael/ens-contenthash-resolver-plugin-wrapper";
+import { ipfsEnsContenthashResolverPlugin } from "@nerfzael/ipfs-ens-contenthash-resolver-plugin-wrapper";
+import { ocrEnsContenthashResolverPlugin } from "@nerfzael/ocr-ens-contenthash-resolver-plugin-wrapper";
 
 export const getDefaultClientConfig = (): ClientConfig<string> => {
   const ethereumPluginConfig: {
@@ -58,11 +61,6 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
           fallbackProviders: config.ipfs.defaultProviders.slice(1),
         }),
       },
-      // ENS is required for resolving domain to IPFS hashes
-      {
-        uri: "wrap://ens/ens-resolver.polywrap.eth",
-        plugin: ensResolverPlugin({}),
-      },
       {
         uri: "wrap://ens/ethereum.polywrap.eth",
         plugin: ethereumPlugin(ethereumPluginConfig),
@@ -100,16 +98,40 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
           fallbackProviders: config.ipfs.defaultProviders.slice(1),
         }),
       },
+      {
+        uri: "wrap://ens/ens-contenthash-resolver.eth",
+        plugin: ensContenthashResolverPlugin({})
+      },
+      {
+        uri: "wrap://ens/ipfs-ens-contenthash-resolver.eth",
+        plugin: ipfsEnsContenthashResolverPlugin({})
+      },
+      {
+        uri: "wrap://ens/ocr-ens-contenthash-resolver.eth",
+        plugin: ocrEnsContenthashResolverPlugin({})
+      },
+      {
+        uri: "wrap://ens/ocr-resolver.eth",
+        plugin: ocrResolverPlugin({})
+      }
     ],
     interfaces: [
       {
         interface: coreInterfaceUris.uriResolver.uri,
         implementations: [
           "wrap://ens/ipfs-resolver.polywrap.eth",
-          "wrap://ens/ens-resolver.polywrap.eth",
-          // new Uri("wrap://ens/fs-resolver.polywrap.eth"),
+          "wrap://ens/ens-contenthash-resolver.eth",
+          "wrap://ens/ipfs-ens-contenthash-resolver.eth",
+          "wrap://ens/ocr-ens-contenthash-resolver.eth",
+          "wrap://ens/ocr-resolver.eth",
         ],
       },
+      {
+        interface: "wrap://ens/uri-resolver.core.polywrap.eth",
+        implementations: [
+          "wrap://ens/ocr-resolver.eth"
+        ]
+      }
       // {
       //   interface: coreInterfaceUris.logger,
       //   implementations: [new Uri("wrap://ens/js-logger.polywrap.eth")],

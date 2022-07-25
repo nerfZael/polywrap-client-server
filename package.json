@@ -22,14 +22,19 @@
   ],
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
-    "start": "ts-node src/main.ts",
+    "dev": "ts-node src/main.ts",
     "execute": "node bin/main.js",
     "test": "yarn test:jest",
     "test:jest": "jest test --passWithNoTests",
     "install:ci": "yarn install"
   },
   "dependencies": {
+    "@nerfzael/ens-contenthash-resolver-plugin-wrapper": "0.1.0",
     "@nerfzael/http-plugin-wrapper": "0.2.0",
+    "@nerfzael/ipfs-ens-contenthash-resolver-plugin-wrapper": "0.1.0",
+    "@nerfzael/ocr-core": "^0.4.0",
+    "@nerfzael/ocr-ens-contenthash-resolver-plugin-wrapper": "0.1.3",
+    "@nerfzael/ocr-resolver-plugin-wrapper": "0.3.0",
     "@nerfzael/polywrap-remote-client": "0.3.0",
     "@polywrap/client-js": "0.1.0",
     "@polywrap/ens-resolver-plugin-js": "0.1.0",
@@ -51,6 +56,7 @@
     "@types/jest": "28.1.4",
     "@types/node": "16.11.11",
     "axios": "0.27.2",
+    "ethers": "5.6.9",
     "jest": "28.1.2",
     "ts-jest": "28.0.5",
     "ts-node": "10.3.0"
