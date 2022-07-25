@@ -134,6 +134,22 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     res.json(sanitizedResult);
   }));
 
+  app.get('/resolve/ens/:network/:domain', handleError(async (req, res) => {
+    const { network, domain } = req.params as any;
+
+    console.log("resolve", {
+      uri: `ens/${network}/${domain}`,
+      args: req.query
+    });
+
+    const result = await client.resolveUri(`ens/${network}/${domain}`, {
+      noCacheRead: req.query.nocacheread === "true",
+      noCacheWrite: req.query.nocachewrite === "true",
+    });
+
+    res.send(`<pre>${escapeHTML(JSON.stringify(result.uriHistory, null, 2))}</pre>`);
+  }));
+
   app.get('/schema/ens/:network/:domain', handleError(async (req, res) => {
     const { network, domain, method } = req.params as any;
 
@@ -193,6 +209,22 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     } else {
       res.send(`Executed method ${method}`);
     }
+  }));
+
+  app.get('/resolve/ens/:domain', handleError(async (req, res) => {
+    const { domain } = req.params as any;
+
+    console.log("resolve", {
+      uri: `ens/${domain}/:domain`,
+      args: req.query
+    });
+
+    const result = await client.resolveUri(`ens/${domain}`, {
+      noCacheRead: req.query.nocacheread === "true",
+      noCacheWrite: req.query.nocachewrite === "true",
+    });
+
+    res.send(`<pre>${escapeHTML(JSON.stringify(result.uriHistory, null, 2))}</pre>`);
   }));
 
   app.get('/schema/ens/:domain', handleError(async (req, res) => {
