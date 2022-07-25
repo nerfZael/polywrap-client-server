@@ -28,7 +28,10 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
       },
       rinkeby: {
         provider: config.ethereum.providers.rinkeby
-      }
+      },
+      polygon: {
+        provider: config.ethereum.providers.polygon
+      },
     }
   };
   

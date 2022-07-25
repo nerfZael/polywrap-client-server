@@ -24,7 +24,8 @@ export const config: {
     providers: {
       mainnet: string,
       ropsten: string,
-      rinkeby: string
+      rinkeby: string,
+      polygon: string
     };
   },
   ipfs: {
