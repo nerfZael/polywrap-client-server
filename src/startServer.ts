@@ -134,99 +134,6 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     res.json(sanitizedResult);
   }));
 
-  app.get('/resolve/ens/:network/:domain', handleError(async (req, res) => {
-    const { network, domain } = req.params as any;
-
-    console.log("resolve", {
-      uri: `ens/${network}/${domain}`,
-      args: req.query
-    });
-
-    const result = await client.resolveUri(`ens/${network}/${domain}`, {
-      noCacheRead: req.query.nocacheread === "true",
-      noCacheWrite: req.query.nocachewrite === "true",
-    });
-
-    res.send(`<pre>${escapeHTML(JSON.stringify(result.uriHistory, null, 2))}</pre>`);
-  }));
-
-  app.get('/schema/ens/:network/:domain', handleError(async (req, res) => {
-    const { network, domain, method } = req.params as any;
-
-    console.log("Body", {
-      uri: `ens/${network}/${domain}`,
-      method,
-      args: req.query
-    });
-
-    const schema = await client.getSchema(`ens/${network}/${domain}`);
-
-    res.send(`<pre>${escapeHTML(schema)}</pre>`);
-  }));
-
-  app.get('/ens/:network/:domain/:method', handleError(async (req, res) => {
-    const { network, domain, method } = req.params as any;
-
-    console.log("Body", {
-      uri: `ens/${network}/${domain}`,
-      method,
-      args: req.query
-    });
-
-    const result = await client.invoke({
-      uri: `ens/${network}/${domain}`,
-      method,
-      args: req.query
-    });
-
-    const sanitizedResult = {
-      data: result.data,
-      error: result.error
-        ? result.error.message
-        : undefined
-    };
-
-    console.log(sanitizedResult);
-
-    if(sanitizedResult.error) {
-      res.send(`<pre>${
-        escapeHTML(sanitizedResult.error)
-      }</pre>`);
-    } else if(sanitizedResult.data) {
-      if(typeof sanitizedResult.data === 'string') {
-        res.send(`<pre>${
-          escapeHTML(sanitizedResult.data)
-        }</pre>`);
-      } else if(typeof sanitizedResult.data === 'number') {
-        res.send(`<pre>${
-          escapeHTML(sanitizedResult.data.toString())
-        }</pre>`);
-      } else {
-        res.send(`<pre>${
-          escapeHTML(JSON.stringify(sanitizedResult.data, null, 2))
-        }</pre>`);
-      }
-    } else {
-      res.send(`Executed method ${method}`);
-    }
-  }));
-
-  app.get('/resolve/ens/:domain', handleError(async (req, res) => {
-    const { domain } = req.params as any;
-
-    console.log("resolve", {
-      uri: `ens/${domain}/:domain`,
-      args: req.query
-    });
-
-    const result = await client.resolveUri(`ens/${domain}`, {
-      noCacheRead: req.query.nocacheread === "true",
-      noCacheWrite: req.query.nocachewrite === "true",
-    });
-
-    res.send(`<pre>${escapeHTML(JSON.stringify(result.uriHistory, null, 2))}</pre>`);
-  }));
-
   app.get('/schema/ens/:domain', handleError(async (req, res) => {
     const { domain, method } = req.params as any;
 
@@ -241,76 +148,78 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     res.send(`<pre>${escapeHTML(schema)}</pre>`);
   }));
 
-  app.get('/ens/:domain/:method', handleError(async (req, res) => {
-    const { domain, method } = req.params as any;
 
-    console.log("Body", {
-      uri: `ens/${domain}`,
-      method,
-      args: req.query
+  app.get('/schema/:path(*)', handleError(async (req, res) => {
+    const { path } = req.params as any;
+  
+    console.log("Schema", {
+      uri: `${path}`,
+      query: req.query
     });
 
-    const result = await client.invoke({
-      uri: `ens/${domain}`,
-      method,
-      args: req.query
-    });
-
-    const sanitizedResult = {
-      data: result.data,
-      error: result.error
-        ? result.error.message
-        : undefined
-    };
-
-    console.log(sanitizedResult);
-
-    if(sanitizedResult.error) {
-      res.send(`<pre>${
-        escapeHTML(sanitizedResult.error)
-      }</pre>`);
-    } else if(sanitizedResult.data) {
-      if(typeof sanitizedResult.data === 'string') {
-        res.send(`<pre>${
-          escapeHTML(sanitizedResult.data)
-        }</pre>`);
-      } else if(typeof sanitizedResult.data === 'number') {
-        res.send(`<pre>${
-          escapeHTML(sanitizedResult.data.toString())
-        }</pre>`);
-      } else {
-        res.send(`<pre>${
-          escapeHTML(JSON.stringify(sanitizedResult.data, null, 2))
-        }</pre>`);
-      }
-    } else {
-      res.send(`Executed method ${method}`);
-    }
-  }));
-
-  app.get('/schema/ipfs/:cid', handleError(async (req, res) => {
-    const { cid, method } = req.params as any;
-
-    console.log("Body", {
-      uri: `ipfs/${cid}`,
-    });
-
-    const schema = await client.getSchema(`ipfs/${cid}`);
+    const schema = await client.getSchema(path);
 
     res.send(`<pre>${escapeHTML(schema)}</pre>`);
   }));
 
-  app.get('/ipfs/:cid/:method', handleError(async (req, res) => {
-    const { cid, method } = req.params as any;
+  app.get('/manifest/:path(*)', handleError(async (req, res) => {
+    const { path } = req.params as any;
+  
+    console.log("Manifest", {
+      uri: `${path}`,
+      query: req.query
+    });
 
-    console.log("Body", {
-      uri: `ipfs/${cid}`,
+    const result = await client.resolveUri(path, {
+      noCacheRead: req.query.nocacheread === "true",
+      noCacheWrite: req.query.nocachewrite === "true",
+    });
+    
+    if(!result.wrapper) {
+      res.send(`<pre>${escapeHTML(JSON.stringify(result.uriHistory, null, 2))}</pre>`);
+    } else {
+      const manifest = await result.wrapper.getManifest({}, client);
+      console.log(manifest)
+      res.send(`<pre>${escapeHTML(JSON.stringify(manifest, null, 2))}</pre>`);
+    }
+  }));
+
+  app.get('/resolve/:path(*)', handleError(async (req, res) => {
+    const { path } = req.params as any;
+  
+    console.log("Resolve", {
+      uri: `${path}`,
+      query: req.query
+    });
+
+    const result = await client.resolveUri(path, {
+      noCacheRead: req.query.nocacheread === "true",
+      noCacheWrite: req.query.nocachewrite === "true",
+    });
+
+    res.send(`<pre>${escapeHTML(JSON.stringify(result.uriHistory, null, 2))}</pre>`);
+  }));
+
+  app.get('/i/:path(*)', handleError(async (req, res) => {
+    const { path } = req.params as any;
+  
+    console.log("Invoke", {
+      uri: `${path}`,
+      query: req.query
+    });
+
+    const parts = path.split("/");
+    const uri = parts.slice(0, parts.length - 1).join("/");
+    const method = parts[parts.length - 1];
+
+    console.log("client.invoke", {
+      uri,
       method,
       args: req.query
     });
 
     const result = await client.invoke({
-      uri: `ipfs/${cid}`,
+      uri,
       method,
       args: req.query
     });
@@ -323,7 +232,6 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     };
 
     console.log(sanitizedResult);
-
     
     if(sanitizedResult.error) {
       res.send(`<pre>${
@@ -341,6 +249,17 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
           escapeHTML(sanitizedResult.data.toString())
         }</pre>`);
         return;
+      } else if(typeof sanitizedResult.data === 'object') {
+        const file = sanitizedResult.data as unknown as any;
+        if(file._wrap_link_type && file._wrap_link_type === "file") {
+          res.end(file.content);
+          return;
+        }
+
+        res.send(`<pre>${
+          escapeHTML(JSON.stringify(sanitizedResult.data, null, 2))
+        }</pre>`);
+        return;
       } else {
         res.send(`<pre>${
           escapeHTML(JSON.stringify(sanitizedResult.data, null, 2))
@@ -348,7 +267,7 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
         return;
       }
     } else {
-      res.send(`Executed method ${method}`);
+      res.send(`Executed ${uri}: ${method}`);
       return;
     }
   }));

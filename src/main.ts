@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
 import { startServer } from "./startServer";
-import { getDefaultClientConfig } from "./getDefaultClientConfig";
 import dotenv from "dotenv";
 import fs from "fs";
 import { ExpirableWrapperCache, PolywrapClientWithCustomCache } from "@nerfzael/polywrap-remote-client";
-
+import { getDefaultClientConfig } from "./getDefaultClientConfig";
 dotenv.config({ path: ".env" });
 
 export const config: {
