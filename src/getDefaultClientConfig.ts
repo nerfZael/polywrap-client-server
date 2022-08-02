@@ -96,10 +96,7 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
       // },
       {
         uri: "wrap://ens/ipfs-resolver.polywrap.eth",
-        plugin: ipfsResolverPlugin({
-          provider: config.ipfs.defaultProviders[0],
-          fallbackProviders: config.ipfs.defaultProviders.slice(1),
-        }),
+        plugin: ipfsResolverPlugin({}),
       },
       {
         uri: "wrap://ens/ens-contenthash-resolver.eth",
