@@ -251,10 +251,21 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
         return;
       } else if(typeof sanitizedResult.data === 'object') {
         const file = sanitizedResult.data as unknown as any;
-        if(file._wrap_link_type && file._wrap_link_type === "file") {
-          res.end(file.content);
-          return;
-        }
+        if(file._wrap_link_type) {
+          switch(file._wrap_link_type) {
+            case "json":
+              res.end(file.content);
+              return;
+            case "file":
+              res.end(file.content);
+              return;
+            case "text":
+              res.send(`<pre>${
+                escapeHTML(file.content)
+              }</pre>`);
+              return;
+          }
+        } 
 
         res.send(`<pre>${
           escapeHTML(JSON.stringify(sanitizedResult.data, null, 2))
