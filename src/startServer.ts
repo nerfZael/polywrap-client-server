@@ -257,6 +257,10 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
               res.end(file.content);
               return;
             case "file":
+              res.writeHead(200, {
+                'Content-Type': file.contentType,
+                'Content-Length': file.content.length
+              });
               res.end(file.content);
               return;
             case "text":
