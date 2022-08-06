@@ -1,6 +1,6 @@
 {
   "name": "@nerfzael/polywrap-client-server",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "main": "bin/main.js",
   "types": "bin/main.d.ts",
   "author": "nerfZael",
@@ -36,6 +36,7 @@
     "@nerfzael/ocr-core": "0.4.0",
     "@nerfzael/ocr-ens-contenthash-resolver-plugin-wrapper": "0.1.4",
     "@nerfzael/ocr-resolver-plugin-wrapper": "0.3.1",
+    "@nerfzael/wrap-client-plugin-wrapper": "0.3.0",
     "@polywrap/client-js": "0.3.0",
     "@polywrap/ens-resolver-plugin-js": "0.3.0",
     "@polywrap/ethereum-plugin-js": "0.3.0",
@@ -43,6 +44,7 @@
     "@polywrap/ipfs-resolver-plugin-js": "0.3.0",
     "@polywrap/sha3-plugin-js": "0.3.0",
     "@polywrap/uts46-plugin-js": "0.3.0",
+    "@polywrap/msgpack-js": "0.3.0",
     "connect-timeout": "1.9.0",
     "cors": "2.8.5",
     "dotenv": "16.0.1",

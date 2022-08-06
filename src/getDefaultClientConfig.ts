@@ -12,6 +12,7 @@ import { ocrResolverPlugin } from "@nerfzael/ocr-resolver-plugin-wrapper";
 import { ensContenthashResolverPlugin } from "@nerfzael/ens-contenthash-resolver-plugin-wrapper";
 import { ipfsEnsContenthashResolverPlugin } from "@nerfzael/ipfs-ens-contenthash-resolver-plugin-wrapper";
 import { ocrEnsContenthashResolverPlugin } from "@nerfzael/ocr-ens-contenthash-resolver-plugin-wrapper";
+import { wrapClientPlugin } from "@nerfzael/wrap-client-plugin-wrapper";
 
 export const getDefaultClientConfig = (): ClientConfig<string> => {
   const ethereumPluginConfig: {
@@ -28,6 +29,9 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
       },
       rinkeby: {
         provider: config.ethereum.providers.rinkeby
+      },
+      goerli: {
+        provider: config.ethereum.providers.goerli
       },
       polygon: {
         provider: config.ethereum.providers.polygon
@@ -50,6 +54,27 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
             "127.0.0.1",
             "http://127.0.0.1",
             "https://127.0.0.1",
+          ]
+        }
+      },
+      {
+        uri: "wrap://ens/wrap-capabilities.eth",
+        env: {
+          capabilities: [
+            "wrap://ens/wrap-capabilities.eth",
+            "wrap://ens/wrap-link.eth",
+            "wrap://ens/http.polywrap.eth",
+            "wrap://ens/ipfs.polywrap.eth",
+            "wrap://ens/ethereum.polywrap.eth",
+            "wrap://ens/uts46.polywrap.eth",
+            "wrap://ens/sha3.polywrap.eth",
+            "wrap://ens/wrap-client.eth",
+
+            "wrap://ens/ipfs-resolver.polywrap.eth",
+            "wrap://ens/ens-contenthash-resolver.eth",
+            "wrap://ens/ipfs-ens-contenthash-resolver.eth",
+            "wrap://ens/ocr-ens-contenthash-resolver.eth",
+            "wrap://ens/ocr-resolver.eth",
           ]
         }
       }
@@ -113,6 +138,10 @@ export const getDefaultClientConfig = (): ClientConfig<string> => {
       {
         uri: "wrap://ens/ocr-resolver.eth",
         plugin: ocrResolverPlugin({})
+      },
+      {
+        uri: "wrap://ens/wrap-client.eth",
+        plugin: wrapClientPlugin({})
       }
     ],
     interfaces: [

@@ -24,6 +24,7 @@ export const config: {
       mainnet: string,
       ropsten: string,
       rinkeby: string,
+      goerli: string,
       polygon: string
     };
   },

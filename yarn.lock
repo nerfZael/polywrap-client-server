@@ -1061,6 +1061,13 @@
     express "4.18.1"
     typescript "4.4.2"
 
+"@nerfzael/wrap-client-plugin-wrapper@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@nerfzael/wrap-client-plugin-wrapper/-/wrap-client-plugin-wrapper-0.3.0.tgz#d9635148d733d67f0bcc08b094fd13dcdb72ad71"
+  integrity sha512-BQQrk7rjvIv6iNoTc+QIc09Ou6qQzA7q5A/kBKhp4G2wKSW/71KxHZVePge+H1uHMSaXuQ1Hx7aIUTnf/26RZg==
+  dependencies:
+    "@polywrap/core-js" "0.3.0"
+
 "@opentelemetry/api-metrics@0.20.0":
   version "0.20.0"
   resolved "https://registry.yarnpkg.com/@opentelemetry/api-metrics/-/api-metrics-0.20.0.tgz#5c332cadfacd1fa966318292ba8dbb542f5ead57"
