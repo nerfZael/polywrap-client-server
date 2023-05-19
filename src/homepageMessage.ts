@@ -7,9 +7,6 @@ Format for schema:  wrap.link/schema/{URI}
 
 Try it! 
   Queries:
-    Simple wrapper: <a href="https://wrap.link/i/ens/rinkeby/simple.eth/simpleMethod?arg=Hello">wrap.link/i/ens/rinkeby/simple.eth/simpleMethod?arg=Hello</a>
-    HTTP plugin: <a href="https://wrap.link/i/ens/http.polywrap.eth/get?url=https://www.google.com">wrap.link/i/ens/http.polywrap.eth/get?url=https://www.google.com</a>
-  Schema:
-    Simple wrapper: <a href="https://wrap.link/schema/ens/rinkeby/simple.eth">wrap.link/schema/ens/rinkeby/simple.eth</a>
-    HTTP plugin: <a href="https://wrap.link/schema/ens/http.polywrap.eth">wrap.link/schema/ens/http.polywrap.eth</a>
+  HTTP plugin: <a href="https://wrap.link/i/ens/wraps.eth:http@1.0.0/get?url=https://www.google.com">wrap.link/i/ens/wraps.eth:http@1.1.0/get?url=https://www.google.com</a>
+  Pokablocks wrapper: <a href="https://wrap.link/i/ens/pokablocks.eth/battle?challengerId=23&defenderId=23">wrap.link/i/ens/pokablocks.eth/battle?challengerId=23&defenderId=23</a>
 `;

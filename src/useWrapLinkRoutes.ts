@@ -13,39 +13,52 @@ export const useWrapLinkRoutes = (app: Express, client: PolywrapClient) => {
       query: req.query
     });
 
-    const result = await client.resolveUri(path, {
-      noCacheRead: req.query.nocacheread === "true",
-      noCacheWrite: req.query.nocachewrite === "true",
-    });
+    const result = await client.tryResolveUri(path);
 
-    res.send(`<pre>${escapeHTML(JSON.stringify(result.uriHistory, null, 2))}</pre>`);
+    if (!result.ok) {
+      console.error(result.error);
+      res.status(500).send((result.error as Error)?.message);
+      return;
+    }
+
+    res.send(`<pre>${escapeHTML(JSON.stringify(result.value, null, 2))}</pre>`);
   }));
 
   app.get('/:path(*)', handleError(async (req, res) => {
     const { path } = req.params as any;
   
+    if (path === "favicon.ico") {
+      res.end();
+      return;
+    }
+    
     console.log("GET", {
       uri: `${path}`,
       query: req.query
     });
    
     const result = await client.invoke<WrapLinkResponse>({
-      uri: "wrap://ens/wrap-link.eth",
+      uri: "wrap://ipfs/QmQmV6y63eDfWXo7fHapb4xZp3tsnQTaKnQB6X1zrJAWaR",
       method: "get",
       args: {
         path,
-        args:  req.query && Object.keys(req.query).length > 0 
+        args: req.query && Object.keys(req.query).length > 0 
           ? msgpackEncode(req.query)
           : undefined
       }
     });
 
-    const sanitizedResult = {
-      data: result.data,
-      error: result.error
-        ? result.error.message
-        : undefined
-    };
+    const sanitizedResult = result.ok
+      ? {
+        ok: true,
+        value: result.value,
+      }
+      : {
+        ok: false,
+        error: result.error
+          ? result.error.message
+          : undefined
+      };
 
     console.log(`Result of ${path}`, sanitizedResult);
     
@@ -54,8 +67,8 @@ export const useWrapLinkRoutes = (app: Express, client: PolywrapClient) => {
         escapeHTML(sanitizedResult.error)
       }</pre>`);
       return;
-    } else if(sanitizedResult.data) {
-      const response = sanitizedResult.data;
+    } else if(sanitizedResult.ok) {
+      const response = sanitizedResult.value;
 
       if(!response) {
         res.end();

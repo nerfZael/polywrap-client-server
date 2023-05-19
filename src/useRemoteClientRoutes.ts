@@ -1,86 +1,100 @@
-import { PolywrapClient } from "@polywrap/client-js";
-import { Express } from "express";
-import { handleError } from "./handleError";
+// import { PolywrapClient } from "@polywrap/client-js";
+// import { Express } from "express";
+// import { handleError } from "./handleError";
 
-export const useRemoteClientRoutes = (app: Express, client: PolywrapClient) => {
-  app.post('/client/resolveUri', handleError(async (req, res) => {
-    const { uri } = req.body;
+// export const useRemoteClientRoutes = (app: Express, client: PolywrapClient) => {
+//   app.post('/client/resolveUri', handleError(async (req, res) => {
+//     const { uri } = req.body;
 
-    console.log("/client/resolveUri", {
-      uri,
-    });
+//     console.log("/client/resolveUri", {
+//       uri,
+//     });
 
-    const { uri: resultUri, wrapper, error } = await client.resolveUri(uri);
+//     const result = await client.tryResolveUri(uri);
 
-    if(!wrapper || error) {
-      if(error) {
-        console.log(`${error.type}: ${error.error?.message}`);
-      } else {
-        console.log(`Successfully resolved URI: ${uri} -> ${resultUri}`);
-      }
+//     if (!result.ok) {
+//       console.error(result.error);
+//       res.status(500).send((result.error as Error)?.message);
+//       return;
+//     }
 
-      const sanitizedResult = {
-        uri: resultUri,
-        error: error
-          ? {
-            type: error.type,
-            message: error.error?.message,
-          }
-          : undefined
-      };
+//     const uriPackageOrWrapper = result.value;
 
-      res.json(sanitizedResult);
-      return;
-    }
-    if (!(wrapper as any)["_getWasmModule"]) {
-      res.status(500).send("URI is not a wasm wrapper");
-      return;
-    }
+//     if(!wrapper || error) {
+//       if(error) {
+//         console.log(`${error.type}: ${error.error?.message}`);
+//       } else {
+//         console.log(`Successfully resolved URI: ${uri} -> ${resultUri}`);
+//       }
 
-    const resolver = (wrapper as any)["_uriResolver"];
-    const manifest: string = await wrapper?.getFile({
-      path: "polywrap.json",
-      encoding: "utf-8",
-    }, client) as string;
+//       const sanitizedResult = {
+//         uri: resultUri,
+//         error: error
+//           ? {
+//             type: error.type,
+//             message: error.error?.message,
+//           }
+//           : undefined
+//       };
 
-    const module: ArrayBuffer = await (wrapper as any)["_getWasmModule"](client);
+//       res.json(sanitizedResult);
+//       return;
+//     }
+//     if (!(wrapper as any)["_getWasmModule"]) {
+//       res.status(500).send("URI is not a wasm wrapper");
+//       return;
+//     }
 
-    const sanitizedResult = {
-      uri: resultUri,
-      module: Array.from(new Uint8Array(module)),
-      manifest,
-      resolver,
-    };
+//     const resolver = (wrapper as any)["_uriResolver"];
+//     const manifest: string = await wrapper?.getFile({
+//       path: "polywrap.json",
+//       encoding: "utf-8",
+//     }, client) as string;
 
-    console.log(`Successfully resolved URI: ${uri} -> ${resultUri}`);
+//     const module: ArrayBuffer = await (wrapper as any)["_getWasmModule"](client);
 
-    res.json(sanitizedResult);
-  }));
+//     const sanitizedResult = {
+//       uri: resultUri,
+//       module: Array.from(new Uint8Array(module)),
+//       manifest,
+//       resolver,
+//     };
+
+//     console.log(`Successfully resolved URI: ${uri} -> ${resultUri}`);
+
+//     res.json(sanitizedResult);
+//   }));
   
-  app.post('/client/invoke', handleError(async (req, res) => {
-    const { uri, method, args } = req.body;
+//   app.post('/client/invoke', handleError(async (req, res) => {
+//     const { uri, method, args } = req.body;
 
-    console.log("/client/invoke", {
-      uri,
-      method,
-      args
-    });
+//     console.log("/client/invoke", {
+//       uri,
+//       method,
+//       args
+//     });
 
-    const result = await client.invoke({
-      uri,
-      method,
-      args
-    });
+//     const result = await client.invoke({
+//       uri,
+//       method,
+//       args
+//     });
 
-    const sanitizedResult = {
-      data: result.data,
-      error: result.error
-        ? result.error.message
-        : undefined
-    };
 
-    console.log(sanitizedResult);
+//     const sanitizedResult = result.ok
+//       ? {
+//         ok: true,
+//         value: result.value,
+//       }
+//       : {
+//         ok: false,
+//         error: result.error
+//           ? result.error.message
+//           : undefined
+//       };
 
-    res.json(sanitizedResult);
-  }));
-};
+//     console.log(sanitizedResult);
+
+//     res.json(sanitizedResult);
+//   }));
+// };
