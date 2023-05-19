@@ -29,6 +29,8 @@
     "install:ci": "yarn install"
   },
   "dependencies": {
+    "@polywrap/ethereum-provider-js": "npm:@polywrap/ethereum-provider-js@~0.3.1",
+    "@polywrap/ethereum-provider-js-v1": "npm:@polywrap/ethereum-provider-js@~0.2.4",
     "@nerfzael/wrap-client-plugin-wrapper": "0.4.2",
     "@polywrap/client-js": "0.10.1",
     "@polywrap/msgpack-js": "0.10.1",
