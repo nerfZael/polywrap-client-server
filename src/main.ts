@@ -3,8 +3,8 @@
 import { startServer } from "./startServer";
 import dotenv from "dotenv";
 import fs from "fs";
-import { ExpirableWrapperCache, PolywrapClientWithCustomCache } from "@nerfzael/polywrap-remote-client";
 import { getDefaultClientConfig } from "./getDefaultClientConfig";
+import { PolywrapClient } from "@polywrap/client-js";
 dotenv.config({ path: ".env" });
 
 export const config: {
@@ -33,12 +33,7 @@ export const config: {
   }
 } = JSON.parse(fs.readFileSync(process.env.CONFIG_FILE_PATH!, "utf8"));
 
-const client = new PolywrapClientWithCustomCache(getDefaultClientConfig(), {
-  noDefaults: true,
-  cache: new ExpirableWrapperCache(
-    config.polywrap.client.cache.expiration
-  )
-});
+const client = new PolywrapClient(getDefaultClientConfig(config));
 
 (async () => {
   await startServer(client, config.server.port, config.server.requestTimeout);

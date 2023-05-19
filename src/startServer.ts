@@ -6,7 +6,6 @@ import http from "http";
 import { handleError } from "./handleError";
 import timeout from "connect-timeout";
 import { homepageMessage } from "./homepageMessage";
-import { useRemoteClientRoutes } from "./useRemoteClientRoutes";
 import { useWrapLinkRoutes } from "./useWrapLinkRoutes";
 
 export const startServer = (client: PolywrapClient, port: number, requestTimeout: number): Promise<http.Server> => {
@@ -54,7 +53,7 @@ export const startServer = (client: PolywrapClient, port: number, requestTimeout
     res.send(`<pre>${homepageMessage}</pre>`);
   }));
 
-  useRemoteClientRoutes(app, client);
+  // useRemoteClientRoutes(app, client);
   useWrapLinkRoutes(app, client);
 
   const server = http.createServer({}, app);
